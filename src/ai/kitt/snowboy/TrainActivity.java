@@ -147,18 +147,22 @@ public class TrainActivity extends Activity {
                             "        ]\n" +
                             "    }";
 
+                    new HTTPPostJSONRequest() {
 
-                    HTTPPostJSONRequest request = new HTTPPostJSONRequest();
-                    String response = request.doInBackground(endpoint, JSONData, PMDLFileName);
+                        @Override
+                        protected void onPreExecute() {
+                            textDisplay.setText("TRAINING MODEL..");
+                        }
 
-                    textDisplay.setText("MODEL TRAINED!");
+                        public void onPostExecute(String result) {
+                            textDisplay.setText("MODEL TRAINED!");
+                            if (result == "done") {
+                                Intent intent = new Intent(context, Demo.class);
+                                startActivity(intent);
+                            }
+                        }
 
-                    if (response == "done") {
-                        Intent intent = new Intent(context, Demo.class);
-                        intent.putExtra("recording","start");
-                        startActivity(intent);
-                    }
-
+                    }.execute(endpoint, JSONData, PMDLFileName);
                 }
             }
         });

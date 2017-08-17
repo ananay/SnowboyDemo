@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,6 +24,9 @@ import java.nio.Buffer;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import ai.kitt.snowboy.TrainActivity;
+import ai.kitt.snowboy.demo.R;
+
 import static android.R.id.input;
 
 /**
@@ -31,6 +35,8 @@ import static android.R.id.input;
 public class HTTPPostJSONRequest extends AsyncTask <String, Void, String>
 {
     private static String recPath = Environment.getExternalStorageDirectory() + "/snowboy";
+
+    @Override
     public String doInBackground(String... url)
     {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -50,6 +56,7 @@ public class HTTPPostJSONRequest extends AsyncTask <String, Void, String>
         int len = 500;
 
         try {
+
             URL url = new URL(myurl);
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setDoOutput(true);
