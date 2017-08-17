@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
         <style name="MyTheme" parent="Theme.AppCompat.Light">

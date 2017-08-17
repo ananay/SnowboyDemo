@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0-alpha4'
     }
+
 }
 apply plugin: 'android'
 
@@ -51,5 +52,16 @@ android {
     defaultConfig {
     }
     productFlavors {
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        compile 'com.github.markushi:circlebutton:1.1'
     }
 }

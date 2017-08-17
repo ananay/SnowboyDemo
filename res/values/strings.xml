@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="app_name">SnowboyDemo</string>
-    <string name="log">Log</string>
+    <string name="app_name">Dhwani</string>
+    <string name="recording_text">TAP TO START AND STOP RECORDING</string>
 </resources>

@@ -3,6 +3,7 @@ package ai.kitt.snowboy;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Base64;
@@ -20,32 +21,48 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
+import at.markushi.ui.CircleButton;
 import ai.kitt.snowboy.demo.R;
+
+import static android.os.SystemClock.sleep;
 
 public class TrainActivity extends Activity {
 
-    private Button btnControl, btnNext;
-    private TextView textDisplay;
+    private Button btnNext;
+    private CircleButton btnControl;
+    private TextView textDisplay, recordNumber;
     private WavAudioRecorder mRecorder;
     private static String mRcordFilePath = Environment.getExternalStorageDirectory() + "/SnowboyDemo";
     private static String mRcordFilePathtwo = Environment.getExternalStorageDirectory() + "/snowboy";
     private int fileNumber = 1;
     public static Context context;
+    public String state;
+
+    public void setLato() {
+        Typeface typeFace = Typeface.createFromAsset(getAssets(),"fonts/lato.ttf");
+        recordNumber.setTypeface(typeFace);
+        textDisplay.setTypeface(typeFace);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train);
         context = getApplicationContext();
-        textDisplay = (TextView) this.findViewById(R.id.Textdisplay);
+        recordNumber = (TextView) this.findViewById(R.id.recordNumber);
+        textDisplay = (TextView) this.findViewById(R.id.textInstr);
+        btnControl = (CircleButton) this.findViewById(R.id.record);
+        btnNext = (Button) this.findViewById(R.id.btnNext);
         File directory = new File(mRcordFilePath);
         directory.mkdirs();
-        btnControl = (Button) this.findViewById(R.id.btnControl);
-        btnNext = (Button) this.findViewById(R.id.btnNext);
-        btnControl.setText("Start");
+        btnNext.setVisibility(View.INVISIBLE);
+        Typeface typeFace = Typeface.createFromAsset(getAssets(),"fonts/lato.ttf");
+        recordNumber.setTypeface(typeFace);
+        textDisplay.setTypeface(typeFace);
+        state = "START";
+        recordNumber.setText(String.valueOf(fileNumber));
+        textDisplay.setText("TAP TO " + state + " RECORDING");
         mRecorder = WavAudioRecorder.getInstance();
-        textDisplay.setText("File " + fileNumber);
         btnControl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,22 +70,24 @@ public class TrainActivity extends Activity {
                     mRecorder.setOutputFile(mRcordFilePath + "/wav" + fileNumber + ".wav");
                     mRecorder.prepare();
                     mRecorder.start();
-                    btnControl.setText("Stop");
+                    state = "STOP";
+                    textDisplay.setText("TAP TO " + state + " RECORDING");
                 } else if (WavAudioRecorder.State.ERROR == mRecorder.getState()) {
                     mRecorder.release();
                     mRecorder = WavAudioRecorder.getInstance();
                     mRecorder.setOutputFile(mRcordFilePath + "/wav" + fileNumber + ".wav");
-                    btnControl.setText("Start");
-                    textDisplay.setText(textDisplay.getText() + " - Try Again!");
+                    state = "START";
+                    textDisplay.setText("We have encountered an error. Please try again later.");
                 } else {
                     mRecorder.stop();
                     mRecorder.reset();
-                    btnControl.setText("Start");
+                    state = "START";
+                    textDisplay.setText("TAP TO " + state + " RECORDING");
                     File recording = new File(mRcordFilePath + "/wav" + fileNumber + ".wav");
                     if(recording.exists()) {
-                        btnNext.setEnabled(true);
+                        btnNext.setVisibility(View.VISIBLE);
                     } else {
-                        textDisplay.setText(textDisplay.getText() + " - Try Again!");
+                        textDisplay.setText("We have encountered an error. Please try again later.");
                     }
                 }
             }
@@ -78,10 +97,18 @@ public class TrainActivity extends Activity {
             public void onClick(View v) {
                 if(fileNumber < 3) {
                     fileNumber++;
-                    textDisplay.setText("File " + fileNumber);
+                    recordNumber.setText(String.valueOf(fileNumber));
+                    btnNext.setVisibility(View.INVISIBLE);
                 } else {
 
                     // Get the Base64 of the WAV Files
+                    btnNext.setVisibility(View.INVISIBLE);
+
+                    recordNumber.setText("~");
+
+                    textDisplay.setText("TRAINING MODEL, PLEASE WAIT");
+
+                    //App not freeze so above statements can run.
 
                     String PMDLFileName = Constants.NAME_UMDL;
 
@@ -124,7 +151,7 @@ public class TrainActivity extends Activity {
                     HTTPPostJSONRequest request = new HTTPPostJSONRequest();
                     String response = request.doInBackground(endpoint, JSONData, PMDLFileName);
 
-                    textDisplay.setText("Model Processing Complete. Launching Main Activity...");
+                    textDisplay.setText("MODEL TRAINED!");
 
                     if (response == "done") {
                         Intent intent = new Intent(context, Demo.class);
@@ -133,7 +160,6 @@ public class TrainActivity extends Activity {
                     }
 
                 }
-                btnNext.setEnabled(false);
             }
         });
     }

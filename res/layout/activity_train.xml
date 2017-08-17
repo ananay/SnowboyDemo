@@ -1,30 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="ai.kitt.snowboy.TrainActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffff"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/Textdisplay"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="80dp">
 
-    <Button
-        android:id="@+id/btnControl"
+    </FrameLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textAlignment="center" />
+        >
+
+        <at.markushi.ui.CircleButton
+            android:id="@+id/record"
+            android:layout_width="164dip"
+            android:layout_height="164dip"
+            app:cb_color="#e24444"
+            app:cb_pressedRingWidth="16dip" />
+
+        <TextView
+            android:id="@+id/recordNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="69dp"
+            android:text="1"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:textColor="@android:color/background_light"
+            tools:ignore="NewApi" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp">
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textInstr"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_dark"
+        android:textSize="16sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+    </FrameLayout>
 
     <Button
         android:id="@+id/btnNext"
-        android:layout_width="wrap_content"
+        style="@style/AppTheme.Button"
+        android:backgroundTint="#262626"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:textAlignment="center"
+        android:layout_gravity="center"
         android:text="Next"
-        android:enabled="false"/>
-
+        tools:ignore="HardcodedText,UnusedAttribute" />
 </LinearLayout>

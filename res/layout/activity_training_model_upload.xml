@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:theme="@style/MyTheme"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#3774e7"
+    android:background="#ffff"
     android:orientation="vertical">
 
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="match_parent"
+        android:layout_height="275dp"
+        android:background="@android:color/background_light"
+        android:elevation="2dp"
+        app:srcCompat="@drawable/startrecording"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textAlignment="center" />
 </LinearLayout>
