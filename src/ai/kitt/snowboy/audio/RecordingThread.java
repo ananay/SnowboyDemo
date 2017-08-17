@@ -20,25 +20,29 @@ public class RecordingThread {
     private static final String TAG = RecordingThread.class.getSimpleName();
 
     private static final String ACTIVE_RES = Constants.ACTIVE_RES;
-    private static final String NAME_UMDL = Constants.ACTIVE_UMDL;
-    
+    private static final String NAME_UMDL = Constants.NAME_UMDL;
+    private static final String BELL_UMDL = Constants.BELL_UMDL;
+    //private static final String INTERCOM_UMDL = Constants.INTERCOM_UMDL;
+    //private static final String SMOKE_UMDL = Constants.SMOKE_UMDL;
+    //private static final String LANDLINE_UMDL = Constants.LANDLINE_UMDL;
+
     private boolean shouldContinue;
     private AudioDataReceivedListener listener = null;
     private Handler handler = null;
     private Thread thread;
     
     private static String strEnvWorkSpace = Constants.DEFAULT_WORK_SPACE;
-    private String activeModel = strEnvWorkSpace + NAME_UMDL;
+    private String activeModel = strEnvWorkSpace + NAME_UMDL + "," + strEnvWorkSpace + BELL_UMDL;
     private String commonRes = strEnvWorkSpace + ACTIVE_RES;
-    private SnowboyDetect nameDetector = new SnowboyDetect(commonRes, activeModel);
+    private SnowboyDetect detector = new SnowboyDetect(commonRes, activeModel);
 
     public RecordingThread(Handler handler, AudioDataReceivedListener listener) {
         this.handler = handler;
         this.listener = listener;
 
-        nameDetector.SetSensitivity("0.5");
-        //-nameDetector.SetAudioGain(1);
-        nameDetector.ApplyFrontend(true);
+        detector.SetSensitivity("0.5,0.6");
+        //detector.SetAudioGain(1);
+        detector.ApplyFrontend(true);
     }
 
     private void sendMessage(MsgEnum what, Object obj){
@@ -99,7 +103,7 @@ public class RecordingThread {
         Log.v(TAG, "Start recording");
         */
         long shortsRead = 0;
-        nameDetector.Reset();
+        detector.Reset();
         while (shouldContinue) {
             record.read(audioBuffer, 0, audioBuffer.length);
             /*
@@ -114,7 +118,7 @@ public class RecordingThread {
             shortsRead += audioData.length;
 
             // Snowboy hotword detection.
-            int result = nameDetector.RunDetection(audioData, audioData.length);
+            int result = detector.RunDetection(audioData, audioData.length);
 
             if (result == -2) {
                 sendMessage(MsgEnum.MSG_VAD_NOSPEECH, null);

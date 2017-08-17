@@ -83,7 +83,7 @@ public class TrainActivity extends Activity {
 
                     // Get the Base64 of the WAV Files
 
-                    String PMDLFileName = Constants.ACTIVE_UMDL;
+                    String PMDLFileName = Constants.NAME_UMDL;
 
                     File wav1 = new File(mRcordFilePath + "/wav1.wav");
                     File wav2 = new File(mRcordFilePath + "/wav2.wav");
