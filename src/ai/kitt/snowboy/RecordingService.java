@@ -20,11 +20,13 @@ public class RecordingService extends Service {
     private RecordingThread recordingThread = null;
     private int activeTimes = 0;
     private Vibrator vibrator = null;
+    public static boolean on = false;
 
     @Override
     public void onCreate() {
         recordingThread = new RecordingThread(handle, new AudioDataSaver());
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        on = true;
         startRecording();
         super.onCreate();
     }
@@ -83,7 +85,7 @@ public class RecordingService extends Service {
     @Override
     public void onDestroy() {
         stopRecording();
-        vibrator.cancel();
+        on = false;
         super.onDestroy();
     }
 }
